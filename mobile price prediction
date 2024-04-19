@@ -1,0 +1,16 @@
+import pandas as pd
+df=pd.read_csv()
+df.info()
+duplicates=df.duplicated()
+duplicates.sum()
+#seperating continuous and categorical columns into seperate table
+columns_to_drop = ['blue','dual_sim', 'fc', 'four_g',
+                   'int_memory', 'n_cores', 'pc', 'talk_time', 'three_g',
+                   'touch_screen', 'wifi', 'price_range']
+df_continuous = df.drop(columns=columns_to_drop, axis=1)
+df_continuous
+# Assuming df is your DataFrame
+columns_to_drop = ['battery_power',	'clock_speed', 'm_dep', 'px_height',
+                   'mobile_wt', 'px_width', 'ram', 'sc_h', 'sc_w']
+df_category = df.drop(columns=columns_to_drop, axis=1)
+df_category
