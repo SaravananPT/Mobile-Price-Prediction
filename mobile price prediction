@@ -14,3 +14,47 @@ columns_to_drop = ['battery_power',	'clock_speed', 'm_dep', 'px_height',
                    'mobile_wt', 'px_width', 'ram', 'sc_h', 'sc_w']
 df_category = df.drop(columns=columns_to_drop, axis=1)
 df_category
+import numpy as np
+import plotly.graph_objs as go
+from scipy.stats import norm
+
+# Generate some random data
+data = df['fc_log']
+
+# Fit a normal distribution to the data
+mu, sigma = norm.fit(data)
+
+# Create a histogram trace
+hist_trace = go.Histogram(
+    x=data,
+    histnorm='probability density',
+    opacity=0.6,
+    marker_color='rgba(0, 128, 128, 0.6)',
+    name='Histogram'
+)
+
+# Create a normal distribution curve trace
+x_range = np.linspace(min(data), max(data), 100)
+pdf_values = norm.pdf(x_range, mu, sigma)
+normal_trace = go.Scatter(
+    x=x_range,
+    y=pdf_values,
+    mode='lines',
+    line=dict(color='black', width=2),
+    name='Normal Distribution'
+)
+
+# Create layout
+layout = go.Layout(
+    title='Histogram with Fitted Normal Distribution',
+    xaxis=dict(title='fc_log transformation'),
+    yaxis=dict(title='Probability Density'),
+    bargap=0.2
+)
+
+# Create figure
+fig = go.Figure(data=[hist_trace, normal_trace], layout=layout)
+
+# Show plot
+fig.show()
+
